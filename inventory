@@ -1,0 +1,2 @@
+[j-job]
+192.168.56.66 ansible_user=jenkins

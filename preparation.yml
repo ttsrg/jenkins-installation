@@ -1,0 +1,40 @@
+- name: Start pre-requarements as root
+  hosts: j-job
+  become: yes      
+  tasks:
+    - name: Create a user jenkins                
+      user: 
+        name: jenkins
+        password: "{{ 'jenkins' | password_hash('sha512', 'mysecretsalt') }}"
+# add check user and change this part
+
+    - name: Add sudoers priveleges      
+      copy:
+        src: ./files/jenkins
+        dest: /etc/sudoers.d/jenkins
+
+# ------------------------------- delimeter ----------------------------------- # 
+
+- name: Start pre-requarements as jenkins-user
+  hosts: j-job
+  become: yes 
+  become_user: jenkins 
+  tasks:  
+    - name: Create directory       
+      file:
+        path: '{{ ansible_user_dir }}/.ssh'
+        state: directory
+
+    - name: Copy public key to remote hosts 
+      copy:
+        src: ./jenkins.dep
+        dest: '{{ ansible_user_dir }}/.ssh/authorized_keys'
+        owner: jenkins
+        group: jenkins
+        mode: 0755
+
+
+
+#   ansible-playbook devops-bootstrap.yml -i inventory -e ansible_user=root -k  #
+
+# ------------------------------- delimeter ----------------------------------- # 
