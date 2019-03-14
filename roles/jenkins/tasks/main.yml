@@ -58,6 +58,10 @@
     state: started
     name: jenkins
 
+- lineinfile: dest=/etc/hosts
+              regexp='^'
+              line='192.168.56.110 jenkins\n'
+              state=present
 
 #java -Duser.home=/opt/jenkins -Xms1000m -Xmx1200m -jar /<path>/jenkins.war
 
