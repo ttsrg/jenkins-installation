@@ -1,1 +1,3 @@
 /.vagrant
+/jenkins_data
+*.retry
