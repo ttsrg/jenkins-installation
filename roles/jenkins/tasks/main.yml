@@ -1,0 +1,37 @@
+---
+# tasks file for jenkins\
+- name: "Create jenkins user"
+  user:
+    name: jenkins
+    password: "{{ 'jenkins' | password_hash('sha512')}}"
+    update_password: on_create
+    append: yes
+  become: yes
+- name: copy war file
+  copy:
+    src: jenkins.war
+    dest: /opt/jenkins.war
+    owner: jenkins
+    group: jenkins
+  become: yes
+- name: create jenkins folder
+  file:
+    path: /opt/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+  become: yes
+- name: copy systemd script
+  copy: 
+    src: jenkins.service
+    dest: /etc/systemd/system/
+  become: yes
+- name: start-jenkins
+  systemd:
+    name: jenkins
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  become: yes
+
+
