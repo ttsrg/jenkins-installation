@@ -1,0 +1,14 @@
+# -----                                         ------- #
+- name: Start script
+  hosts: j-job
+  become: yes 
+  # become_user: jenkins
+  tasks:
+    - name: install dependency
+      yum:
+        name:
+          - java
+          - wget        
+        state: installed
+
+# ------------------------------- delimeter ----------------------------------- # 

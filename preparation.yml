@@ -10,8 +10,8 @@
 
     - name: Add sudoers priveleges      
       copy:
-        src: ./files/jenkins
-        dest: /etc/sudoers.d/jenkins
+        src: ./files/jenkins.permissions
+        dest: /etc/sudoers.d/jenkins.permissions
 
 # ------------------------------- delimeter ----------------------------------- # 
 
@@ -35,6 +35,6 @@
 
 
 
-#   ansible-playbook devops-bootstrap.yml -i inventory -e ansible_user=root -k  #
+#     ansible-playbook preparation.yml -i inventory -e ansible_user=root -k     #
 
 # ------------------------------- delimeter ----------------------------------- # 
