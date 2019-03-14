@@ -1,0 +1,6 @@
+---
+# tasks file for java
+- name: install java
+  yum: name=java
+  become: yes
+  notify: check_version
