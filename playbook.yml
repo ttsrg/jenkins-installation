@@ -12,11 +12,10 @@
     become: yes
     become_user: root
 
-  - name: Create link on service
+  - name: Copy jenkins service file
     copy:
-      src: /opt/jenkins/jenkins.service
+      src: ./jenkins.service
       dest: /etc/systemd/system/jenkins.service
-      remote_src: yes
     become: yes
     become_user: root
 
