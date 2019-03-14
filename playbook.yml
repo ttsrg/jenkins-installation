@@ -1,52 +1,18 @@
 - hosts: all
-  tasks:
-  - name: Install java
-    yum: name=java-1.8.0-openjdk.x86_64 state=installed
+  pre_tasks:
+  - name: Creating directory for facts
+    file:
+      path: /etc/ansible/facts.d
+      state: directory
     become: yes
     become_user: root
 
-  - name: Create user jenkins
-    user:
-      name: jenkins
-      uid: 900
-    become: yes
-    become_user: root
+  roles:
+  - jenkins
+  - nginx
 
-  - name: Copy jenkins service file
-    copy:
-      src: ./jenkins.service
-      dest: /etc/systemd/system/jenkins.service
-    become: yes
-    become_user: root
 
-  - name: Enable and start jenkins service
-    systemd:
-      name: jenkins
-      state: started
-      daemon_reload: yes
-      enabled: yes
-    become: yes
-    become_user: root
 
-  - name: Install nginx
-    yum: name=nginx state=installed
-    become: yes
-    become_user: root
-
-  - name: Copy nginx config
-    copy:
-      src: ./nginx.conf
-      dest: /etc/nginx/nginx.conf
-    become: yes
-    become_user: root
-
-  - name: Enable and start nginx service
-    systemd:
-      name: nginx
-      state: started
-      enabled: yes
-    become: yes
-    become_user: root
 
 
 

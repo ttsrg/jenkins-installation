@@ -1,0 +1,37 @@
+---
+- name: Create user jenkins
+  user:
+    name: jenkins
+    uid: 900
+  become: yes
+  become_user: root
+
+- name: Download jenkins.war
+  get_url:
+    url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+    dest: /opt/jenkins/jenkins.war
+  become: yes
+  become_user: jenkins
+
+- name: Copy jenkins service file
+  copy:
+    src: jenkins.service
+    dest: /etc/systemd/system/jenkins.service
+  become: yes
+  become_user: root
+
+- name: Enable and start jenkins service
+  systemd:
+    name: jenkins
+    state: started
+    daemon_reload: yes
+    enabled: yes
+  notify:
+    Save Jenkins details
+  become: yes
+  become_user: root
+
+- name: Jenkins version
+  shell: cat /opt/jenkins/.jenkins/war/WEB-INF/web.xml | grep 'Jenkins v' | cut -d'>' -f 2| cut -d'<' -f 1
+  register: jenkins_version
+  changed_when: no

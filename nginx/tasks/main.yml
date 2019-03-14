@@ -1,0 +1,25 @@
+---
+- name: Install nginx
+  yum: name=nginx state=installed
+  become: yes
+  become_user: root
+
+- name: Copy nginx config
+  copy:
+    src: ./nginx.conf
+    dest: /etc/nginx/nginx.conf
+  become: yes
+  become_user: root
+
+- name: Java Version
+  shell: nginx -v | awk '{print $3}'
+  register: nginx_version
+  changed_when: no
+
+- name: Enable and start nginx service
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+  become: yes
+  become_user: root
