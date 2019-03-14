@@ -1,0 +1,21 @@
+---
+# tasks file for devops_user
+- name: create jenkins users
+  user:
+    name: jenkins
+    password: "{{ 'jenkins' | password_hash('sha512') }}"
+
+- name: grant privileges to devops
+  lineinfile:
+    path: /etc/sudoers
+    line: 'jenkins	ALL=(ALL) 	NOPASSWD:ALL'
+    create: yes
+
+
+- name: Create /opt/jenkins directory
+  file:
+    path: /opt/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755

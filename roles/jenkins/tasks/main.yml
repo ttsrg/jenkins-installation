@@ -1,0 +1,31 @@
+---
+# tasks file for jenkins
+- name: Create /opt/jenkins directory
+  file:
+    path: /opt/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0777
+
+- name: copy jenkins
+  copy:
+    src: jenkins.war
+    dest: /opt/jenkins/jenkins.war
+    owner: jenkins
+    group: jenkins
+    mode: 0777
+
+- name: copy systemd jenkins
+  copy:
+    src: jenkins.service
+    dest: /etc/systemd/system/jenkins.service
+    owner: jenkins
+    group: jenkins
+    mode: 0777
+
+- name: start jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

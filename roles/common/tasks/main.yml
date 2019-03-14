@@ -1,0 +1,18 @@
+---
+# tasks file for common
+#- hosts: servers
+#- name: upgrade all packages
+#  yum:
+#    name: "*"
+#    state: latest
+
+- name: prepare to install
+  yum:
+    name:
+#    - gcc-c++
+#    - git
+    - yum-utils
+    - epel-release
+    - net-tools
+    - java
+    state: latest
