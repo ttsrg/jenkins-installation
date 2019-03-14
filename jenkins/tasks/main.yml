@@ -1,0 +1,46 @@
+---
+# tasks file for jenkins
+
+  - name: "create group <jenkins>"
+    become: yes
+    group:
+      name: jenkins
+      state: present
+
+  - name: "create user <jenkins>"
+    become: yes
+    user:
+      name: jenkins
+      password: "{{ 'jenkins' | password_hash('sha512')}}"
+      createhome: yes        
+      home: '{{ jenkins_home }}'
+
+  - name: "create dir for jenkins"
+    become: yes
+    file:
+      path: '{{ jenkins_home }}'
+      state: directory
+      owner: jenkins
+      group: jenkins
+
+  - name: "copy .war"
+    become: yes
+    copy:
+      src: jenkins.war
+      dest: '{{ jenkins_war_path }}/jenkins.war'
+      owner: jenkins
+      group: jenkins
+
+  - name: "jenkins.service"
+    become: yes
+    copy:
+      src: jenkins.service
+      dest: /etc/systemd/system/
+
+  - name: "start jenkins"
+    become: yes
+    systemd:
+      name: jenkins
+      enabled: yes
+      state: started
+      daemon_reload: yes

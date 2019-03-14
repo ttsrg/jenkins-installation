@@ -1,0 +1,5 @@
+---
+# defaults file for jenkins
+
+jenkins_home: /opt/jenkins
+jenkins_war_path: /opt

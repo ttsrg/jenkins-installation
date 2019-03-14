@@ -1,0 +1,8 @@
+---
+# tasks file for java
+
+  - name: "java installation"
+    yum: name=java
+    become: yes
+    become_user: root
+    notify: is_java_already_installed

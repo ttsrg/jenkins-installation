@@ -1,0 +1,26 @@
+---
+# tasks file for nginx
+
+- name: "nginx, epel-release"
+  yum: 
+    name: epel-release
+    state: present
+
+- name: "nginx installation"
+  become: yes
+  yum: 
+    name: nginx
+    state: installed
+    update_cache: true
+
+- name: "copy nginx.conf"
+  become: yes
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: "start nginx"
+  become: yes
+  service:
+    name: nginx
+    state: started

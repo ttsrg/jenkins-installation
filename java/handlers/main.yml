@@ -1,0 +1,6 @@
+---
+# handlers file for java
+
+  - name: is_java_already_installed
+    shell: java -version
+    changed_when: false
