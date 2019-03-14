@@ -1,3 +1,4 @@
 /.vagrant
 /jenkins_data
 *.retry
+/.python-version
