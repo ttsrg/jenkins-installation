@@ -1,2 +1,18 @@
 ---
 # tasks file for nginx
+
+- name: 
+  package: name=epel-release
+  become: yes
+
+- name: install nginx webserver
+  package: name=nginx state=installed
+  become: yes
+
+- name: copy nginx configuration
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  become: yes
+
+- name: ensure nginx is enabled and running
+  service: name=nginx enabled=yes state=running
+  become: yes
