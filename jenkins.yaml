@@ -1,0 +1,4 @@
+- name: run jenkins
+  hosts: all
+  roles:
+    - jenkins
