@@ -1,0 +1,7 @@
+---
+- hosts: jenya
+
+  roles:
+  - java
+  - jenkins
+  - nginx

@@ -1,0 +1,52 @@
+---
+- name: Create "{{ user_name }}:{{ user_name }}" user
+  user:
+    name: "{{ user_name }}"
+    append: yes
+  become: yes
+  become_user: root
+
+
+- name: Create "{{ user_name }}" dir -  /opt/{{ user_name }}
+  file:
+    path: /opt/{{ user_name }}
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  become: yes
+  become_method: sudo
+
+- name: copy war file
+  copy:
+    src: '{{ user_name }}.war'
+    dest:  /opt/{{ user_name }}
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  become: yes
+  become_method: sudo
+#  force: no
+#  changed_when: False
+
+- name: copy jenkins.service file
+  copy:
+    src: '{{ user_name }}.service'
+    dest: /etc/systemd/system/ #multi-user.target.wants
+    mode: 0755
+#     owner: "{{ user_name }}"
+#     group: "{{ user_name }}"
+  notify:
+    - systemd daemon reload
+    - start service jenkins
+  become: yes
+  become_method: sudo
+
+
+
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+
+- name:  start service jenkins
+  service: 'name={{ user_name }}.service  state=started'
+  become: yes
+#  become_method: sudo
