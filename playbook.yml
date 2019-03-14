@@ -12,16 +12,6 @@
     become: yes
     become_user: root
 
-  - name: Change permissions for mounted directory
-    file:
-      path: /opt/jenkins
-      state: directory
-      owner: jenkins
-      group: jenkins
-      mode: 0755
-    become: yes
-    become_user: root
-
   - name: Create link on service
     copy:
       src: /opt/jenkins/jenkins.service
@@ -39,11 +29,25 @@
     become: yes
     become_user: root
 
+  - name: Install nginx
+    yum: name=nginx state=installed
+    become: yes
+    become_user: root
 
+  - name: Copy nginx config
+    copy:
+      src: ./nginx.conf
+      dest: /etc/nginx/nginx.conf
+    become: yes
+    become_user: root
 
-
-
-
+  - name: Enable and start nginx service
+    systemd:
+      name: nginx
+      state: started
+      enabled: yes
+    become: yes
+    become_user: root
 
 
 
