@@ -4,4 +4,5 @@
   roles:
   - java
   - jenkins
-  - ngnx 
+  - ngnx
+  - nginx-config 
