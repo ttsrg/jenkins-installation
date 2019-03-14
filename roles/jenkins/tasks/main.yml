@@ -1,0 +1,49 @@
+
+  - name: new users creation jenkins
+    user:
+      name: jenkins
+      password: "{{ 'jenkins' | password_hash('sha512') }}"
+
+  - name: give permitions to jenkins
+    lineinfile:
+      path: /etc/sudoers
+      line: 'jenkins ALL=(ALL) ALL'
+
+  - name: make direcotry
+    file:
+      path: "/home/jenkins/.ssh"
+      state: directory
+
+  - name: create empty file
+    file:
+      path: "/home/jenkins/.ssh/authorized_keys"
+      state: touch 
+  
+  - name: download jenkins.repo
+    get_url:
+      url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+      dest: /etc/yum.repos.d/jenkins.repo
+
+  - name: import jenkins key
+    rpm_key:
+      state: present
+      key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+  - name: install jenkins
+    yum:
+      name: jenkins
+      state: present
+
+  - name: start jenkins
+    systemd:
+      name: jenkins
+      state: started
+
+  - name: enable jenkins
+    systemd:
+      name: jenkins
+      enabled: true
+
+  - name: sleep for 30 seconds and continue with play
+    wait_for: timeout=30
+    delegate_to: localhost
