@@ -8,8 +8,10 @@ Vagrant.configure("2") do |config|
 	test.vm.provider "virtualbox" do |vb|
 		vb.memory=2048
 	end
-	#test.vm.provision :shell, path: "nginx1.sh"
+	test.vm.provision :ansible do |ansible|
+		ansible.playbook = "jen.yaml"
+			
+  	end
   end
-
 
 end

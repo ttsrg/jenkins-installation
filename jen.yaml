@@ -1,0 +1,7 @@
+- name: Jenkins prerequisites
+  hosts: all
+
+  tasks:
+    - name: Installing java
+      package: name=java
+      become: yes
